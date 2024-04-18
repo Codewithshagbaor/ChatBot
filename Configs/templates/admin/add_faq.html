@@ -1,0 +1,49 @@
+{% extends 'admin/admin_base.html' %}
+
+{% block title %}
+Add New FAQ
+{% endblock %}
+
+{% block content %}
+<br>
+<div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
+    <div class="p-6 bg-white rounded-md">
+        <h2 class="text-3xl font-semibold mb-4">Add New FAQ</h2>
+
+        <!-- Form -->
+        <form hx-post="/dashboard/faqs/add/" hx-target="#message" id="faq_form">
+            {% csrf_token %}
+            <div class="mb-4">
+                <label for="question" class="block text-gray-700 font-bold mb-2">Question</label>
+                <input type="text" id="question" name="question" class="w-full border border-gray-300 rounded-md px-6 py-2 focus:outline-none focus:border-blue-500" placeholder="Enter your question" required>
+            </div>
+            <div class="mb-4">
+                <label for="answer" class="block text-gray-700 font-bold mb-2">Answer</label>
+                <textarea id="answer" name="answer" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:border-blue-500" rows="4" placeholder="Enter your answer" required></textarea>
+            </div>
+            <div>
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Submit</button>
+            </div>
+        </form>
+        <br>
+        <div id="responseded">
+            <div id="message"></div>
+          </div>
+
+    </div>
+</div>
+<script>
+    document.getElementById('faq_form').addEventListener('htmx:afterRequest', function (event) {
+                // Clear the form fields
+                document.getElementById('question').value = '';
+                document.getElementById('answer').value = '';
+
+                // Hide the success message after 5 seconds
+                setTimeout(function () {
+                  document.getElementById('responseded').innerHTML = '';
+                }, 2000);
+              });
+</script>
+<script src="https://unpkg.com/htmx.org@1.9.10" integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC" crossorigin="anonymous"></script>
+
+{% endblock %}
